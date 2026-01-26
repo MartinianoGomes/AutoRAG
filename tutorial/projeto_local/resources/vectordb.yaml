@@ -1,0 +1,7 @@
+vectordb:
+- client_type: ephemeral
+  collection_name: memoria_local
+  db_type: chroma
+  embedding_batch: 50
+  embedding_model: huggingface_all_mpnet_base_v2
+  name: chroma_local

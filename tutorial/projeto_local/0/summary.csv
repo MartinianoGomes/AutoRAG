@@ -1,0 +1,4 @@
+node_line_name,node_type,best_module_filename,best_module_name,best_module_params,best_execution_time
+retrieve_node_line,lexical_retrieval,0.parquet,BM25,"{'top_k': 5, 'bm25_tokenizer': 'porter_stemmer'}",0.0048738479614257
+retrieve_node_line,semantic_retrieval,0.parquet,VectorDB,"{'top_k': 5, 'vectordb': 'chroma_local'}",0.0674710750579834
+retrieve_node_line,hybrid_retrieval,1.parquet,HybridCC,"{'top_k': 5, 'normalize_method': 'mm', 'weight_range': (0.0, 1.0), 'test_weight_size': 21, 'weight': 0.0}",0.0583388328552246
