@@ -1,0 +1,10 @@
+filename,module_name,module_params,execution_time,retrieval_f1,retrieval_recall,retrieval_precision,retrieval_ndcg,retrieval_mrr,is_best
+0.parquet,BM25,"{'top_k': 10, 'bm25_tokenizer': 'porter_stemmer'}",0.002889847755432129,0.18181818181818182,1.0,0.1,1.0,1.0,False
+1.parquet,BM25,"{'top_k': 10, 'bm25_tokenizer': 'gpt2'}",0.11809561252593995,0.18181818181818182,1.0,0.1,1.0,1.0,False
+2.parquet,BM25,"{'top_k': 10, 'bm25_tokenizer': 'space'}",0.005253052711486817,0.18181818181818182,1.0,0.1,1.0,1.0,False
+3.parquet,BM25,"{'top_k': 3, 'bm25_tokenizer': 'porter_stemmer'}",0.002221417427062988,0.5,1.0,0.33333333333333337,1.0,1.0,True
+4.parquet,BM25,"{'top_k': 3, 'bm25_tokenizer': 'gpt2'}",0.11831879615783691,0.5,1.0,0.33333333333333337,1.0,1.0,False
+5.parquet,BM25,"{'top_k': 3, 'bm25_tokenizer': 'space'}",0.0029358625411987304,0.5,1.0,0.33333333333333337,1.0,1.0,False
+6.parquet,BM25,"{'top_k': 5, 'bm25_tokenizer': 'porter_stemmer'}",0.002631878852844238,0.33333333333333337,1.0,0.2,1.0,1.0,False
+7.parquet,BM25,"{'top_k': 5, 'bm25_tokenizer': 'gpt2'}",0.12430088520050049,0.33333333333333337,1.0,0.2,1.0,1.0,False
+8.parquet,BM25,"{'top_k': 5, 'bm25_tokenizer': 'space'}",0.003625297546386719,0.33333333333333337,1.0,0.2,1.0,1.0,False
