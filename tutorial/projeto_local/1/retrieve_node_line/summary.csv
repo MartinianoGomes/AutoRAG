@@ -1,0 +1,4 @@
+node_type,best_module_filename,best_module_name,best_module_params,best_execution_time
+lexical_retrieval,0.parquet,BM25,"{'top_k': 5, 'bm25_tokenizer': 'space'}",0.0057289600372314
+semantic_retrieval,0.parquet,VectorDB,"{'top_k': 5, 'vectordb': 'chroma_local'}",0.0532814502716064
+hybrid_retrieval,1.parquet,HybridCC,"{'top_k': 5, 'normalize_method': 'mm', 'weight_range': (0.0, 1.0), 'test_weight_size': 21, 'weight': 0.0}",0.0493887424468994
