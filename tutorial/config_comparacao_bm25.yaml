@@ -1,0 +1,22 @@
+# Configuração para comparar diferentes abordagens de retrieval
+# Este arquivo compara BM25 com diferentes tokenizadores
+# Para usar Vector DB, configure: export OPENAI_API_KEY="sua-chave"
+
+node_lines:
+  - node_line_name: retrieve_node_line
+    nodes:
+      # Teste com BM25 usando diferentes tokenizadores
+      - node_type: lexical_retrieval
+        strategy:
+          metrics:
+            [
+              retrieval_f1,
+              retrieval_recall,
+              retrieval_precision,
+              retrieval_ndcg,
+              retrieval_mrr,
+            ]
+        top_k: [3, 5, 10] # Testar diferentes valores de top_k
+        modules:
+          - module_type: bm25
+            bm25_tokenizer: [porter_stemmer, space, gpt2]

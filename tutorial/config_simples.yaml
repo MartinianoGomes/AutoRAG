@@ -1,0 +1,14 @@
+# Configuração simples de AutoRAG para tutorial
+# Este exemplo usa apenas BM25 (não requer API keys externas)
+
+node_lines:
+  - node_line_name: retrieve_node_line
+    nodes:
+      # 1. Retrieval Léxico com BM25
+      - node_type: lexical_retrieval
+        strategy:
+          metrics: [retrieval_f1, retrieval_recall, retrieval_precision]
+        top_k: 3
+        modules:
+          - module_type: bm25
+            bm25_tokenizer: [porter_stemmer, space]

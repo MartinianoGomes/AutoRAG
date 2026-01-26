@@ -1,0 +1,75 @@
+# Configuração para RAG em Memória com comparação de métricas
+# REQUER: export OPENAI_API_KEY="sua-chave"
+#
+# Compara:
+# 1. BM25 (busca léxica)
+# 2. ChromaDB em memória (busca semântica)
+# 3. Híbrido (combina ambos)
+
+vectordb:
+  - name: chroma_memory
+    db_type: chroma
+    client_type: ephemeral # Em memória - não persiste
+    embedding_model: openai_embed_3_small
+    collection_name: memoria_test
+    embedding_batch: 100
+
+node_lines:
+  - node_line_name: retrieve_node_line
+    nodes:
+      # 1. Busca Léxica (BM25)
+      - node_type: lexical_retrieval
+        strategy:
+          metrics:
+            [
+              retrieval_f1,
+              retrieval_recall,
+              retrieval_precision,
+              retrieval_ndcg,
+              retrieval_mrr,
+              retrieval_map,
+            ]
+        top_k: 5
+        modules:
+          - module_type: bm25
+            bm25_tokenizer: [porter_stemmer, space]
+
+      # 2. Busca Semântica (Vector DB em memória)
+      - node_type: semantic_retrieval
+        strategy:
+          metrics:
+            [
+              retrieval_f1,
+              retrieval_recall,
+              retrieval_precision,
+              retrieval_ndcg,
+              retrieval_mrr,
+              retrieval_map,
+            ]
+        top_k: 5
+        modules:
+          - module_type: vectordb
+            vectordb: chroma_memory
+
+      # 3. Busca Híbrida (BM25 + Vector DB)
+      - node_type: hybrid_retrieval
+        strategy:
+          metrics:
+            [
+              retrieval_f1,
+              retrieval_recall,
+              retrieval_precision,
+              retrieval_ndcg,
+              retrieval_mrr,
+              retrieval_map,
+            ]
+        top_k: 5
+        modules:
+          # RRF - Reciprocal Rank Fusion
+          - module_type: hybrid_rrf
+            weight_range: (4, 80)
+          # CC - Convex Combination
+          - module_type: hybrid_cc
+            normalize_method: [mm, tmm, z]
+            weight_range: (0.0, 1.0)
+            test_weight_size: 51
