@@ -22,33 +22,60 @@
 ## Instalação
 
 ### Pré-requisitos
-- Python 3.10+
-- UV (gerenciador de pacotes rápido)
+- Python 3.10+ (3.12 recomendado)
+- pip ou UV (gerenciador de pacotes rápido)
 
-### Instalação Completa
+### Instalação no Windows
+
+```powershell
+# 1. Navegar para o diretório do projeto
+cd C:\Users\martinianogomes\OneDrive\Documentos\Projetos\AutoRAG
+
+# 2. Criar ambiente virtual
+python -m venv .venv
+
+# 3. Ativar ambiente (PowerShell)
+.\.venv\Scripts\Activate.ps1
+
+# Ou no CMD:
+# .venv\Scripts\activate.bat
+
+# Ou no Git Bash:
+# source .venv/Scripts/activate
+
+# 4. Instalar AutoRAG com todas as dependências (pode levar 15-30 min)
+pip install -e ".[all]" --timeout 3600
+
+# 5. (Opcional) Instalar suporte a modelos locais
+pip install torch sentence-transformers llama-index-embeddings-huggingface
+```
+
+### Instalação no Linux
 
 ```bash
 # 1. Navegar para o diretório do projeto
 cd /home/martinianogomes/Documentos/Projetos/Academico/TCC/AutoRAG
 
 # 2. Criar ambiente virtual
-source $HOME/snap/code/220/.local/share/../bin/env  # Carregar UV
-uv venv .venv --python 3.12
+python -m venv .venv
 
 # 3. Ativar ambiente
 source .venv/bin/activate
 
 # 4. Instalar AutoRAG básico
-uv pip install -e .
+pip install -e ".[all]" --timeout 3600
 
 # 5. (Opcional) Instalar suporte a modelos locais
-uv pip install torch sentence-transformers llama-index-embeddings-huggingface
+pip install torch sentence-transformers llama-index-embeddings-huggingface
 ```
 
 ### Verificar Instalação
 
 ```bash
-source .venv/bin/activate
+# Windows (Git Bash): source .venv/Scripts/activate
+# Windows (PowerShell): .\.venv\Scripts\Activate.ps1
+# Linux: source .venv/bin/activate
+
 autorag --help
 ```
 
