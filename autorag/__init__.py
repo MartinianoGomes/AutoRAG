@@ -60,12 +60,17 @@ generator_models = {
 
 try:
 	from llama_index.llms.huggingface import HuggingFaceLLM
-	from llama_index.llms.ollama import Ollama
-
 	generator_models["huggingfacellm"] = HuggingFaceLLM
-	generator_models["ollama"] = Ollama
-
 except ImportError:
+	pass
+
+try:
+	from llama_index.llms.ollama import Ollama
+	generator_models["ollama"] = Ollama
+except ImportError:
+	pass
+
+if "huggingfacellm" not in generator_models and "ollama" not in generator_models:
 	logger.info(
 		"You are using API version of AutoRAG."
 		"To use local version, run pip install 'AutoRAG[gpu]'"
