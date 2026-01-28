@@ -11,33 +11,49 @@ from autorag.strategy import select_best
 
 def normalize_mm(scores: List[str], fixed_min_value: float = 0):
 	arr = np.array(scores)
+	if arr.size == 0:
+		return arr
 	max_value = np.max(arr)
 	min_value = np.min(arr)
+	if max_value == min_value:
+		return np.ones_like(arr)
 	norm_score = (arr - min_value) / (max_value - min_value)
 	return norm_score
 
 
 def normalize_tmm(scores: List[str], fixed_min_value: float):
 	arr = np.array(scores)
+	if arr.size == 0:
+		return arr
 	max_value = np.max(arr)
+	if max_value == fixed_min_value:
+		return np.ones_like(arr)
 	norm_score = (arr - fixed_min_value) / (max_value - fixed_min_value)
 	return norm_score
 
 
 def normalize_z(scores: List[str], fixed_min_value: float = 0):
 	arr = np.array(scores)
+	if arr.size == 0:
+		return arr
 	mean_value = np.mean(arr)
 	std_value = np.std(arr)
+	if std_value == 0:
+		return np.zeros_like(arr)
 	norm_score = (arr - mean_value) / std_value
 	return norm_score
 
 
 def normalize_dbsf(scores: List[str], fixed_min_value: float = 0):
 	arr = np.array(scores)
+	if arr.size == 0:
+		return arr
 	mean_value = np.mean(arr)
 	std_value = np.std(arr)
 	min_value = mean_value - 3 * std_value
 	max_value = mean_value + 3 * std_value
+	if max_value == min_value:
+		return np.ones_like(arr)
 	norm_score = (arr - min_value) / (max_value - min_value)
 	return norm_score
 
