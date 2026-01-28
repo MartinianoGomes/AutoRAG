@@ -194,6 +194,8 @@ async def vectordb_pure(
 			zip(score_result, id_result), key=lambda pair: pair[0], reverse=True
 		)
 	]
+	if not result:
+		return [], []
 	id_result, score_result = zip(*result)
 	return list(id_result), list(score_result)
 
