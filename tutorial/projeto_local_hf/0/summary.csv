@@ -1,0 +1,4 @@
+node_line_name,node_type,best_module_filename,best_module_name,best_module_params,best_execution_time
+retrieve_node_line,lexical_retrieval,0.parquet,BM25,"{'top_k': 3, 'bm25_tokenizer': 'porter_stemmer'}",0.0041121959686279
+retrieve_node_line,semantic_retrieval,0.parquet,VectorDB,"{'top_k': 3, 'vectordb': 'chroma_hf'}",0.2656638383865356
+post_retrieve_node_line,prompt_maker,0.parquet,Fstring,{'prompt': 'Contexto recuperado do banco de dados:\n{retrieved_contents}\n\nPergunta do usuário: {query}\n\nResposta baseada no contexto acima:\n'},0.0003983974456787

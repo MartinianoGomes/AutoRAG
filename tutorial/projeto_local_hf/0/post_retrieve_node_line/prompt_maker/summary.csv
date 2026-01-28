@@ -1,0 +1,2 @@
+filename,module_name,module_params,execution_time,average_prompt_token,is_best
+0.parquet,Fstring,{'prompt': 'Contexto recuperado do banco de dados:\n{retrieved_contents}\n\nPergunta do usuário: {query}\n\nResposta baseada no contexto acima:\n'},0.00039839744567871094,5663.2,True

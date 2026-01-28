@@ -1,0 +1,2 @@
+filename,module_name,module_params,execution_time,retrieval_f1,retrieval_recall,retrieval_precision,is_best
+0.parquet,VectorDB,"{'top_k': 3, 'vectordb': 'chroma_hf'}",0.2656638383865356,0.5,1.0,0.33333333333333337,True

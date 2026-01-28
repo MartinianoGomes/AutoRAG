@@ -1,0 +1,3 @@
+node_type,best_module_filename,best_module_name,best_module_params,best_execution_time
+lexical_retrieval,0.parquet,BM25,"{'top_k': 3, 'bm25_tokenizer': 'porter_stemmer'}",0.0041121959686279
+semantic_retrieval,0.parquet,VectorDB,"{'top_k': 3, 'vectordb': 'chroma_hf'}",0.2656638383865356

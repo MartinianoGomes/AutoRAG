@@ -1,0 +1,8 @@
+vectordb:
+- client_type: ephemeral
+  collection_name: autorag_hf_local
+  db_type: chroma
+  embedding_model:
+  - model_name: sentence-transformers/all-MiniLM-L6-v2
+    type: huggingface
+  name: chroma_hf
