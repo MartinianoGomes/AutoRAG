@@ -1,0 +1,35 @@
+# Configuração de AutoRAG 100% LOCAL - SEM CUSTOS DE API
+# Usa apenas BM25 (busca léxica) - não requer OpenAI
+#
+# Execute com:
+# autorag evaluate --config tutorial/config_somente_bm25.yaml \
+#   --qa_data_path tests/resources/qa_data_sample.parquet \
+#   --corpus_data_path tests/resources/corpus_data_sample.parquet \
+#   --project_dir tutorial/projeto_bm25
+
+node_lines:
+  # Linha de Retrieval - Apenas BM25 (gratuito)
+  - node_line_name: retrieve_node_line
+    nodes:
+      - node_type: lexical_retrieval
+        strategy:
+          metrics: [retrieval_f1, retrieval_recall, retrieval_precision]
+        top_k: 3
+        modules:
+          - module_type: bm25
+            bm25_tokenizer: [porter_stemmer, space]
+
+  # Linha de Geração - Prompt simples (retorna contexto sem LLM)
+  - node_line_name: post_retrieve_node_line
+    nodes:
+      - node_type: prompt_maker
+        strategy:
+          metrics:
+            - metric_name: bleu
+        modules:
+          - module_type: fstring
+            prompt: |
+              Contexto recuperado:
+              {retrieved_contents}
+
+              Pergunta: {query}

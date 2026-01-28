@@ -1,0 +1,84 @@
+# Configuração completa de AutoRAG com RAG em Memória e Geração de Texto
+# IMPORTANTE: Requer OPENAI_API_KEY configurada como variável de ambiente
+#
+# No Windows PowerShell:
+#   $env:OPENAI_API_KEY = "sua-chave-aqui"
+#
+# No Git Bash / Linux:
+#   export OPENAI_API_KEY="sua-chave-aqui"
+
+# VectorDB em memória usando ChromaDB
+vectordb:
+  - name: chroma_memoria
+    db_type: chroma
+    client_type: ephemeral # Em memória, não persiste
+    embedding_model: openai_embed_3_small
+    collection_name: autorag_colecao
+
+node_lines:
+  # 1. Linha de Retrieval
+  - node_line_name: retrieve_node_line
+    nodes:
+      # Busca Léxica com BM25
+      - node_type: lexical_retrieval
+        strategy:
+          metrics: [retrieval_f1, retrieval_recall, retrieval_precision]
+        top_k: 3
+        modules:
+          - module_type: bm25
+            bm25_tokenizer: [porter_stemmer, space]
+
+      # Busca Semântica com VectorDB em memória
+      - node_type: semantic_retrieval
+        strategy:
+          metrics: [retrieval_f1, retrieval_recall, retrieval_precision]
+        top_k: 3
+        modules:
+          - module_type: vectordb
+            vectordb: chroma_memoria
+
+      # Busca Híbrida (combina BM25 + Semântico)
+      - node_type: hybrid_retrieval
+        strategy:
+          metrics: [retrieval_f1, retrieval_recall, retrieval_precision]
+        top_k: 3
+        modules:
+          - module_type: hybrid_rrf
+            weight_range: (4, 60)
+
+  # 2. Linha de Geração
+  - node_line_name: post_retrieve_node_line
+    nodes:
+      # Construtor de Prompt
+      - node_type: prompt_maker
+        strategy:
+          metrics:
+            - metric_name: bleu
+            - metric_name: rouge
+          generator_modules:
+            - module_type: llama_index_llm
+              llm: openai
+              model: [gpt-4o-mini]
+        modules:
+          - module_type: fstring
+            prompt: |
+              Você é um assistente útil. Use o contexto abaixo para responder a pergunta.
+
+              Contexto:
+              {retrieved_contents}
+
+              Pergunta: {query}
+
+              Resposta:
+
+      # Gerador de Texto (LLM)
+      - node_type: generator
+        strategy:
+          metrics:
+            - metric_name: bleu
+            - metric_name: rouge
+        modules:
+          - module_type: llama_index_llm
+            llm: openai
+            model: [gpt-4o-mini]
+            temperature: [0.7]
