@@ -1,0 +1,2 @@
+filename,module_name,module_params,execution_time,average_prompt_token,is_best
+0.parquet,Fstring,{'prompt': 'You are a helpful assistant. Use the context below to answer the question.\n\nContext:\n{retrieved_contents}\n\nQuestion: {query}\n\nAnswer:\n'},0.00030536651611328124,5766.5,True

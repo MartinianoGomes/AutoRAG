@@ -1,0 +1,6 @@
+node_line_name,node_type,best_module_filename,best_module_name,best_module_params,best_execution_time
+retrieve_node_line,lexical_retrieval,0.parquet,BM25,"{'top_k': 3, 'bm25_tokenizer': 'porter_stemmer'}",0.0040484428405761
+retrieve_node_line,semantic_retrieval,0.parquet,VectorDB,"{'top_k': 3, 'vectordb': 'chroma_local'}",0.0941036701202392
+retrieve_node_line,hybrid_retrieval,0.parquet,HybridRRF,"{'top_k': 3, 'weight_range': (4, 60), 'weight': 4.0}",0.140665602684021
+post_retrieve_node_line,prompt_maker,0.parquet,Fstring,{'prompt': 'You are a helpful assistant. Use the context below to answer the question.\n\nContext:\n{retrieved_contents}\n\nQuestion: {query}\n\nAnswer:\n'},0.0003053665161132
+post_retrieve_node_line,generator,0.parquet,LlamaIndexLLM,"{'llm': 'ollama', 'model': 'llama3.2:1b', 'temperature': 0.7, 'request_timeout': 300.0}",19.044931602478027
