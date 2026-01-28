@@ -1,0 +1,8 @@
+vectordb:
+- client_type: ephemeral
+  collection_name: autorag_local
+  db_type: chroma
+  embedding_model:
+  - model_name: nomic-embed-text
+    type: ollama
+  name: chroma_local

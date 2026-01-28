@@ -1,0 +1,99 @@
+# Configuração AutoRAG com Modelos LOCAIS (Ollama)
+# 
+# REQUISITOS:
+# 1. Instalar Ollama: https://ollama.com/download
+# 2. Baixar os modelos (execute no terminal após instalar Ollama):
+#    ollama pull nomic-embed-text    # Modelo de embedding (~274MB)
+#    ollama pull llama3.2:1b         # Modelo de geração pequeno (~1.3GB)
+#    
+#    OU para modelos maiores (melhor qualidade, mais RAM):
+#    ollama pull llama3.2:3b         # 3B parâmetros (~2GB)
+#    ollama pull mistral             # 7B parâmetros (~4GB)
+#
+# 3. Iniciar servidor Ollama:
+#    ollama serve
+#
+# EXECUÇÃO:
+# autorag evaluate --config tutorial/config_local_ollama.yaml \
+#   --qa_data_path tests/resources/qa_data_sample.parquet \
+#   --corpus_data_path tests/resources/corpus_data_sample.parquet \
+#   --project_dir tutorial/projeto_local_ollama
+
+# VectorDB em memória com embedding local (Ollama)
+vectordb:
+  - name: chroma_local
+    db_type: chroma
+    client_type: ephemeral
+    embedding_model:
+      - type: ollama
+        model_name: nomic-embed-text
+    collection_name: autorag_local
+
+node_lines:
+  # 1. Linha de Retrieval
+  - node_line_name: retrieve_node_line
+    nodes:
+      # Busca Léxica com BM25 (gratuita, sempre funciona)
+      - node_type: lexical_retrieval
+        strategy:
+          metrics: [retrieval_f1, retrieval_recall, retrieval_precision]
+        top_k: 3
+        modules:
+          - module_type: bm25
+            bm25_tokenizer: [porter_stemmer, space]
+
+      # Busca Semântica com embedding local
+      - node_type: semantic_retrieval
+        strategy:
+          metrics: [retrieval_f1, retrieval_recall, retrieval_precision]
+        top_k: 3
+        modules:
+          - module_type: vectordb
+            vectordb: chroma_local
+
+      # Busca Híbrida (combina BM25 + Semântico)
+      - node_type: hybrid_retrieval
+        strategy:
+          metrics: [retrieval_f1, retrieval_recall, retrieval_precision]
+        top_k: 3
+        modules:
+          - module_type: hybrid_rrf
+            weight_range: (4, 60)
+
+  # 2. Linha de Geração com LLM local (Ollama)
+  - node_line_name: post_retrieve_node_line
+    nodes:
+      # Construtor de Prompt
+      - node_type: prompt_maker
+        strategy:
+          metrics:
+            - metric_name: bleu
+            - metric_name: rouge
+          generator_modules:
+            - module_type: llama_index_llm
+              llm: ollama
+              model: llama3.2:1b
+        modules:
+          - module_type: fstring
+            prompt: |
+              You are a helpful assistant. Use the context below to answer the question.
+              
+              Context:
+              {retrieved_contents}
+              
+              Question: {query}
+              
+              Answer:
+
+      # Gerador de Texto com Ollama (LLM local)
+      - node_type: generator
+        strategy:
+          metrics:
+            - metric_name: bleu
+            - metric_name: rouge
+        modules:
+          - module_type: llama_index_llm
+            llm: ollama
+            model: llama3.2:1b
+            temperature: 0.7
+            request_timeout: 300.0
