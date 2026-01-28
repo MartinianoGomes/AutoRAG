@@ -1,0 +1,2 @@
+filename,module_name,module_params,execution_time,average_prompt_token,is_best
+0.parquet,Fstring,{'prompt': 'Contexto recuperado:\n{retrieved_contents}\n\nPergunta: {query}\n'},0.0003518581390380859,5712.2,True

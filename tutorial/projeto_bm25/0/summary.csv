@@ -1,0 +1,3 @@
+node_line_name,node_type,best_module_filename,best_module_name,best_module_params,best_execution_time
+retrieve_node_line,lexical_retrieval,0.parquet,BM25,"{'top_k': 3, 'bm25_tokenizer': 'porter_stemmer'}",0.004197883605957
+post_retrieve_node_line,prompt_maker,0.parquet,Fstring,{'prompt': 'Contexto recuperado:\n{retrieved_contents}\n\nPergunta: {query}\n'},0.000351858139038
